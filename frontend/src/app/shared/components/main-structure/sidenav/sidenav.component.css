@@ -1,0 +1,30 @@
+/*----------------------------------------------------------------------------------------------------------------------*/
+/* SIDENAV: */
+/*----------------------------------------------------------------------------------------------------------------------*/
+h2 {
+  margin: 10px;
+  text-align: center;
+}
+
+h3 {
+  margin: 10px;
+  text-align: center;
+  border-bottom: 2px solid;
+    -o-border-image: linear-gradient(to right, #743ad5 0%, #d53a9d 100%);
+       border-image: linear-gradient(to right, #743ad5 0%, #d53a9d 100%);
+  border-image-slice: 1;
+}
+
+mat-list-item {
+  cursor: pointer;
+  /* Prevent text select: */
+  -webkit-user-select: none;  /* Safari */
+  -ms-user-select: none;      /* IE 10 and IE 11 */
+  user-select: none;          /* Standard syntax */
+}
+
+span {
+  margin-left: 10px;
+  font-size: 15px;
+}
+/*----------------------------------------------------------------------------------------------------------------------*/

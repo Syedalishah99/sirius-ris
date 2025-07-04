@@ -1,0 +1,367 @@
+<form class="form-element">
+  <div fxLayout="row" fxLayoutAlign="start start">
+    <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
+      <h3 class="details-title">Detalles de la cita:</h3>
+      <div class="current-wrap">
+        <!-- appointment_date -->
+        <div class="current-info divider-alt">
+          <small>Fecha de cita:</small><br/>
+          <span *ngIf="this.sharedProp.current_datetime" class="appointment-firts">{{ this.sharedProp.current_datetime.dateDay + '/' + this.sharedProp.current_datetime.dateMonth + '/' + this.sharedProp.current_datetime.dateYear }}</span>
+        </div>
+
+        <!-- appointment_start -->
+        <div class="current-info divider-alt">
+          <small>Hora de inicio:</small><br/>
+          <span *ngIf="this.sharedProp.current_datetime" class="appointment-firts">{{ this.sharedProp.current_datetime.startHours + ':' + this.sharedProp.current_datetime.startMinutes }}</span>
+        </div>
+
+        <!-- appointment_end -->
+        <div class="current-info divider-alt">
+          <small>Hora de fin:</small><br/>
+          <span *ngIf="this.sharedProp.current_datetime" class="appointment-firts">{{ this.sharedProp.current_datetime.endHours + ':' + this.sharedProp.current_datetime.endMinutes }}</span>
+        </div>
+
+        <!-- equipment -->
+        <div class="current-info text-center divider-alt">
+          <small>Equipamiento:</small><br/>
+          <span *ngIf="this.sharedProp.current_equipment" class="badge-accent" matTooltip="{{ 'AET: ' + this.sharedProp.current_equipment.details.AET }}">
+            <span>{{ this.sharedProp.current_equipment.details.name }}</span>
+          </span>
+        </div>
+
+        <!-- urgency -->
+        <div class="current-info text-center">
+          <small>Urgencia:</small><br/>
+          <div *ngIf="this.sharedProp.current_urgency; then thenBlockUrgency else elseBlockUrgency"></div>
+          <ng-template #thenBlockUrgency><mat-icon class="color-fail" matTooltip="Urgente">directions_run</mat-icon></ng-template>
+          <ng-template #elseBlockUrgency><mat-icon color="accent" matTooltip="Normal">man</mat-icon></ng-template>
+        </div>
+
+        <div class="clear"></div>
+      </div>
+
+      <hr class="dashed" /><br/>
+
+      <h3 class="details-title">Preparación previa:</h3>
+      <div class="current-wrap preparation-wrap">
+        <!-- preparation -->
+        <div class="current-info">
+          <div *ngIf="this.sharedProp.current_procedure && this.sharedProp.current_procedure.preparation !== undefined && this.sharedProp.current_procedure.preparation.length > 0; then thenBlockPreparation else elseBlockPreparation"></div>
+
+          <ng-template #thenBlockPreparation>
+            <span innerHTML="{{ this.sharedProp.current_procedure.preparation }}"></span>
+          </ng-template>
+
+          <ng-template #elseBlockPreparation>
+            <span>El procedimiento seleccionado NO posee preparación previa.</span>
+          </ng-template>
+        </div>
+
+        <div class="clear"></div>
+      </div>
+
+
+      <hr class="dashed" />
+      <div class="text-center">
+        <small>Study IUID</small><br/><span class="label-accent">{{ this.sharedProp.current_study_iuid }}</span>
+      </div>
+    </div> <!-- end fxLayout wrapper -->
+
+    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+      <span *ngIf="this.sharedProp.current_patient">
+        <span *ngIf="this.sharedProp.current_patient.person">
+          <h3 class="details-title">Datos del paciente:</h3>
+          <div class="current-wrap">
+            <!-- documents -->
+            <div class="current-info">
+              <small>Documento/s:</small><br/>
+              <span *ngFor="let current of this.sharedProp.current_patient.person.documents" >
+                <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+                <span matTooltip="{{ document_types[current.doc_type] }}">
+                  <span>{{ current.document }}</span>
+                </span>
+                <br/>
+              </span>
+            </div>
+
+            <!-- names -->
+            <div class="current-info">
+              <small>Nombre completo:</small><br/>
+              <span class="current-firts">
+                <span>{{ this.sharedProp.current_patient.person.name_01 }}</span>
+
+                <span *ngIf="this.sharedProp.current_patient.person.name_02">
+                  <span> {{ this.sharedProp.current_patient.person.name_02 }}</span>
+                </span>
+
+                <span> {{ this.sharedProp.current_patient.person.surname_01 }}</span>
+
+                <span *ngIf="this.sharedProp.current_patient.person.surname_02">
+                  <span> {{ this.sharedProp.current_patient.person.surname_02 }}</span>
+                </span>
+              </span>
+            </div>
+
+            <div class="clear"></div>
+          </div>
+
+          <div class="clear"></div>
+
+          <div class="current-wrap">
+            <!-- birth_date -->
+            <div class="current-info">
+              <small>Fecha de nacimiento:</small><br/>
+              <span class="current-firts">{{ this.sharedProp.current_patient.person.birth_date | date:"dd/MM/yyyy":"UTC" }}</span>
+            </div>
+
+            <!-- genre -->
+            <div class="current-info text-center">
+              <small>Género:</small><br/>
+              <span [ngSwitch]="this.sharedProp.current_patient.person.gender" matTooltip="{{ gender_types[this.sharedProp.current_patient.person.gender] }}">
+                <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
+                <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
+                <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>
+              </span>
+            </div>
+
+            <!-- status -->
+            <div class="current-info text-center">
+              <small>Estado:</small><br/>
+              <span *ngIf="this.sharedProp.current_patient.status; then thenBlock else elseBlock"></span>
+              <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="Activo">done</mat-icon></ng-template>
+              <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Inactivo">clear</mat-icon></ng-template>
+            </div>
+            <div class="clear"></div>
+          </div>
+
+        </span>
+      </span>
+
+      <hr class="dashed"/><br/>
+
+      <span *ngIf="this.sharedProp.current_imaging">
+        <span *ngIf="this.sharedProp.current_imaging.organization && this.sharedProp.current_imaging.branch && this.sharedProp.current_imaging.service && this.sharedProp.current_modality">
+          <h3 class="details-title">Realización del estudio:</h3>
+
+          <div class="current-wrap">
+            <!-- imaging -->
+            <div class="current-info">
+              <small>Organización ► Sucursal ► Servicio:</small><br/>
+              <span class="current-firts">{{ this.sharedProp.current_imaging.organization.short_name + ' ► ' + this.sharedProp.current_imaging.branch.short_name + ' ► ' + this.sharedProp.current_imaging.service.name }}</span>
+            </div>
+
+            <div class="clear"></div>
+          </div>
+
+          <div class="clear"></div>
+
+          <div class="current-wrap">
+            <!-- procedure -->
+            <div class="current-info text-center">
+              <small>Procedimiento a realizar:</small><br/>
+              <span class="badge-alt">
+                <span *ngIf="this.sharedProp.current_procedure">{{ this.sharedProp.current_procedure.name }}</span>
+              </span>
+            </div>
+
+            <!-- modality -->
+            <div class="current-info text-center">
+              <small>Modalidad:</small><br/>
+              <span class="badge" matTooltip="{{ this.sharedProp.current_modality.code_meaning }}">
+                <span>{{ this.sharedProp.current_modality.code_value }}</span>
+              </span>
+            </div>
+
+            <!-- informed_consent -->
+            <div class="current-info text-center">
+              <small>Requiere consentimiento informado:</small><br/>
+              <span *ngIf="this.sharedProp.current_procedure && this.sharedProp.current_procedure.informed_consent; then thenBlock else elseBlock"></span>
+              <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="SI">done</mat-icon></ng-template>
+              <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="NO">clear</mat-icon></ng-template>
+            </div>
+
+            <div class="clear"></div>
+          </div>
+
+        </span>
+      </span>
+    </div> <!-- end fxLayout wrapper -->
+  </div>
+
+  <hr class="dashed"/>
+
+  <mat-tab-group (selectedTabChange)="adjustFullCalendarToUpdate()">
+
+    <!-- APPOINTMENT TAB: ------------------------------------------------------------------------------------------------------------------ -->
+    <mat-tab>
+      <ng-template mat-tab-label><mat-icon class="tab-icon">perm_contact_calendar</mat-icon> Detalles de la cita 
+      <mat-icon *ngIf="detailsTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
+      </ng-template>
+      <app-tab-details></app-tab-details>
+    </mat-tab>
+    <!-- APPOINTMENT TAB: ------------------------------------------------------------------------------------------------------------------ -->
+
+    <!-- SLOT TAB: ------------------------------------------------------------------------------------------------------------------------- -->
+    <mat-tab>
+      <ng-template mat-tab-label><mat-icon class="tab-icon">date_range</mat-icon> Detalles de la coordinación</ng-template>
+      <app-tab-slot></app-tab-slot>
+    </mat-tab>
+    <!-- SLOT TAB: ------------------------------------------------------------------------------------------------------------------------- -->
+
+    <!-- HISTORY TAB: ---------------------------------------------------------------------------------------------------------------- -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">history</mat-icon> Estudios previos
+      </ng-template>
+
+      <div *ngIf="previous; then thenBlockTable else elseBlockTable"></div>
+
+      <ng-template #thenBlockTable>
+        <div #main_list>
+          <table mat-table [dataSource]="previous">
+            <!-- flow_state -->
+            <ng-container matColumnDef="flow_state">
+              <th mat-header-cell *matHeaderCellDef class="text-center column-alt">Flujo de estudio</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                <!--See report-->
+                <span *ngIf="element.flow_state == 'P09'">
+                  <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="Ver informe" color="accent">
+                    <mat-icon>playlist_add_check</mat-icon>
+                  </button>
+                  <br/>
+                </span>
+
+                <!--flow_state-->
+                <span class="badge badge-mini {{ element.flow_state }}" matTooltip="{{ cancellation_reasons[element.cancellation_reasons] }}" *ngIf="element.flow_state">{{ performing_flow_states[element.flow_state] }}</span>
+              </td>
+            </ng-container>
+
+            <!-- date -->
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef class="text-center column-alt"> Fecha </th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                <span *ngIf="element.date">{{ element.date | date : "dd/MM/yyyy" : "UTC" }}</span>
+              </td>
+            </ng-container>
+
+            <!-- checkin_time -->
+            <ng-container matColumnDef="checkin_time">
+              <th mat-header-cell *matHeaderCellDef class="text-center column-alt"> Hora<br/>recepción </th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                <span *ngIf="element.date">{{ element.date | date : "HH:mm" : "UTC" }}</span>
+              </td>
+            </ng-container>
+
+            <!-- patient_age -->
+            <ng-container matColumnDef="patient_age">
+              <th mat-header-cell *matHeaderCellDef matTooltip="Edad al momento de la realización del estudio" class="text-center column-alt"> Edad </th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                <span *ngIf="element.patient">
+                  <span *ngIf="element.patient.person">
+                    <span>{{ sharedFunctions.calculateAge(element.patient.person.birth_date, element.date) }}</span>
+                  </span>
+                </span>
+              </td>
+            </ng-container>
+
+            <!-- details -->
+            <ng-container matColumnDef="details">
+              <th mat-header-cell *matHeaderCellDef class="text-center column-alt"> Detalle </th>
+              <td mat-cell *matCellDef="let element">
+                <!-- procedure -->
+                <span *ngIf="element.procedure">
+                  <span class="badge-alt" matTooltip="{{ element.procedure.code }}">{{ element.procedure.name }}</span>
+                </span>
+
+                <div class="clear"></div><hr class="dashed" />
+
+                <!-- equipment -->        
+                <span *ngIf="element.equipment; then thenBlockTableEquipment else elseBlockTableEquipment"></span>
+                    <ng-template #thenBlockTableEquipment>
+                    <span class="badge-accent" matTooltip="{{ 'AET: ' + element.equipment.AET }}">
+                    <span>{{ element.equipment.name }}</span>
+                    </span>
+                </ng-template>
+                <ng-template #elseBlockTableEquipment>(Sin dato)</ng-template>
+
+                <!-- modality -->
+                <span *ngIf="element.modality; then thenBlockTableModality else elseBlockTableModality"></span>
+                <ng-template #thenBlockTableModality>
+                  <span class="badge" matTooltip="{{ element.modality.code_meaning }}">{{ element.modality.code_value }}</span>
+                </ng-template>
+                <ng-template #elseBlockTableModality>(Sin dato)</ng-template>
+              </td>
+            </ng-container>
+
+            <!-- domain -->
+            <ng-container matColumnDef="domain">
+              <th mat-header-cell *matHeaderCellDef class="text-center column-alt">Dominio</th>
+              <td mat-cell *matCellDef="let element">
+                <div *ngIf="element.appointment" class="domain-container">
+                  <!--referring-->
+                  <small><strong>Solicitante: </strong></small>
+                  <span *ngIf="element.appointment.referring; then thenBlockReferring else elseBlockReferring"></span>
+                  <ng-template #thenBlockReferring>
+                    <small>
+                      <span *ngIf="element.appointment.referring.organization">{{ element.appointment.referring.organization.short_name }}</span>
+                      <span *ngIf="element.appointment.referring.branch"> ► {{ element.appointment.referring.branch.short_name }}</span>
+                      <span *ngIf="element.appointment.referring.service"> ► {{ element.appointment.referring.service.name }}</span>
+                    </small>
+                  </ng-template>
+                  <ng-template #elseBlockReferring>(Sin dato)</ng-template>
+
+                  <hr class="dashed" />
+
+                  <!--imaging-->
+                  <small><strong>Realizador: </strong></small>
+                  <span *ngIf="element.appointment.imaging; then thenBlockImaging else elseBlockImaging"></span>
+                  <ng-template #thenBlockImaging>
+                    <small>
+                      <span *ngIf="element.appointment.imaging.organization">{{ element.appointment.imaging.organization.short_name }}</span>
+                      <span *ngIf="element.appointment.imaging.branch"> ► {{ element.appointment.imaging.branch.short_name }}</span>
+                      <span *ngIf="element.appointment.imaging.service"> ► {{ element.appointment.imaging.service.name }}</span>
+                    </small>
+                  </ng-template>
+                  <ng-template #elseBlockImaging>(Sin dato)</ng-template>
+
+                  <hr class="dashed" />
+
+                  <!--reporting-->
+                  <small><strong>Informador: </strong></small>
+                  <span *ngIf="element.appointment.reporting; then thenBlockReporting else elseBlockReporting"></span>
+                  <ng-template #thenBlockReporting>
+                    <small>
+                      <span *ngIf="element.appointment.reporting.organization">{{ element.appointment.reporting.organization.short_name }}</span>
+                      <span *ngIf="element.appointment.reporting.branch"> ► {{ element.appointment.reporting.branch.short_name }}</span>
+                      <span *ngIf="element.appointment.reporting.service"> ► {{ element.appointment.reporting.service.name }}</span>
+                    </small>
+                  </ng-template>
+                  <ng-template #elseBlockReporting>(Sin dato)</ng-template>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+      </ng-template>
+              
+      <!-- Await previous or not previous -->
+      <ng-template #elseBlockTable>
+        <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
+          No se encontraron estudios previos.
+        </div>
+      </ng-template>
+    </mat-tab>
+    <!-- HISTORY TAB: ---------------------------------------------------------------------------------------------------------------- -->
+
+  </mat-tab-group>
+
+  <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+    <div> <!-- start fxLayout wrapper -->
+      <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
+      <button mat-flat-button type="button" color="primary" (click)="onSubmitMaster()" >GUARDAR</button>
+    </div> <!-- end fxLayout wrapper -->
+  </div>
+</form>

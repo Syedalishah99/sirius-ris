@@ -1,0 +1,35 @@
+.report-wrap {
+    background-color: #3d3f51;
+    color: #fff;
+    padding: 20px;
+    border-radius: 6px;
+}
+
+.sign-button {
+    background: #733ad5a9;
+    color: #ffffff;
+}
+
+.form-element {
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+    padding-left: 15px !important;
+}
+
+.settings-card {
+    text-align: left;
+    background: #2d2d47;
+    opacity: 0.8;
+    border-left: 2px solid #05ff9f77;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.amend-title {
+    position: relative;
+    top: -6px;
+}
+
+.mat-pathology {
+    background-color: #05ff9f8e !important;
+}

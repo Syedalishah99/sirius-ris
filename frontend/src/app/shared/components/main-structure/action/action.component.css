@@ -1,0 +1,129 @@
+/*----------------------------------------------------------------------------------------------------------------------*/
+/* ACTION: */
+/*----------------------------------------------------------------------------------------------------------------------*/
+.second-toolbar{
+  color: #ddd;
+  background-color: #1e1e2f;
+}
+
+.main-action {
+  font-size: 15px;
+  background-color: #232338;
+  padding-top: 6px;
+  padding-left: 8px;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  border-bottom: 2px solid;
+    -o-border-image: linear-gradient(to right, #743ad5 0%, #d53a9d 100%);
+       border-image: linear-gradient(to right, #743ad5 0%, #d53a9d 100%);
+  border-image-slice: 1;
+}
+
+.main-action a, .main-action button, .main-action input, .main-action mat-form-field {
+  margin-right: 8px;
+}
+
+mat-form-field {
+  margin-bottom: -8px !important;
+}
+
+.main-action ::ng-deep .mat-form-field-outline {
+  background-color: #2d2d47;
+}
+
+.filters {
+  width: 80% !important;
+  font-size: 12px !important;
+}
+
+.button_filters {
+  top: -4px;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  font-size: 12px !important;
+  margin-bottom: 4px !important;
+}
+
+.clean_button {
+  background-color: #50328f !important;
+  color: rgba(255, 255, 255, 0.936) !important;
+}
+/*----------------------------------------------------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------------------------------------------------*/
+/* ADVANCED SEARCH PANEL: */
+/*----------------------------------------------------------------------------------------------------------------------*/
+.advanced-search-panel {
+  border-bottom: 2px solid !important;
+      -o-border-image: linear-gradient(to right, #743ad5 0%, #d53a9d 100%) !important;
+      border-image: linear-gradient(to right, #743ad5 0%, #d53a9d 100%) !important;
+  border-image-slice: 1 !important;
+}
+
+.advanced-search-panel ::ng-deep .mat-form-field-outline {
+  background-color: #2d2d47;
+}
+/*----------------------------------------------------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------------------------------------------------*/
+/* PAGER: */
+/*----------------------------------------------------------------------------------------------------------------------*/
+.pager {
+  position: relative;
+  top: -4px;
+  color: rgba(255, 255, 255, 0.678);
+  font-size: 12px;
+  min-width: 330px;
+}
+
+.pager-info {
+  float:left;
+  text-align: right !important;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 20px;
+}
+
+.pager-select {
+  text-align: left !important;
+  float: right;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.pager-input {
+  position:relative;
+  top: -4px;
+  max-width: 80px;
+}
+
+.pager-input-select {
+  text-align: center;
+  margin-top: -12px;
+}
+
+.pager-arrows {
+  cursor: pointer;
+}
+
+.pager-disabled {
+  cursor: default;
+  color: rgba(255, 255, 255, 0.137);
+}
+/*----------------------------------------------------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------------------------------------------------*/
+/* PATHOLOGIES SECTION: */
+/*----------------------------------------------------------------------------------------------------------------------*/
+.pathologies-title {
+  position: relative;
+  top: -6px;
+}
+
+.mat-pathology {
+  background-color: #05ff9f8e !important;
+}
+/*----------------------------------------------------------------------------------------------------------------------*/

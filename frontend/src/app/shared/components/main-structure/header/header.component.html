@@ -1,0 +1,33 @@
+<button mat-button [matMenuTriggerFor]="userMenu" aria-label="Opciones de usuario">
+  <mat-icon>person</mat-icon>&nbsp;
+  <span class="user_info">
+    <small matTooltip="Usuario">{{ sharedProp.userLogged.name | titlecase }} {{ sharedProp.userLogged.surname | titlecase }}</small>
+    &nbsp; ► &nbsp;
+    <small matTooltip="Rol">{{ userRoles[sharedProp.userLogged.permissions[0].role] }}</small>
+    &nbsp; ► &nbsp;
+    <span [ngSwitch]="sharedProp.userLogged.permissions[0].type">
+      <span *ngSwitchCase="'organization'">
+        <small matTooltip="Organización">{{ sharedProp.userLogged.permissions[0].description }}</small> &nbsp;
+      </span>
+      <span *ngSwitchCase="'branch'">
+        <small matTooltip="Sucursal">{{ sharedProp.userLogged.permissions[0].description }}</small> &nbsp;
+      </span>
+      <span *ngSwitchCase="'service'">
+        <small matTooltip="Servicio">{{ sharedProp.userLogged.permissions[0].description }}</small> &nbsp;
+      </span>
+    </span>
+
+  </span>
+  <mat-icon>more_vert</mat-icon>
+</button>
+
+<mat-menu #userMenu="matMenu" xPosition="before">
+  <!-- 1: Superusuario, 2: Administrador, Concesiones: [10: Acceso a logs del usuario] -->
+  <button mat-menu-item *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [10]))" routerLink="/logs/user">
+    <mat-icon>format_list_bulleted</mat-icon><span>Logs del usuario</span>
+  </button>
+  
+  <button mat-menu-item routerLink="/signin">
+    <mat-icon>logout</mat-icon><span>Cerrar sesión</span>
+  </button>
+</mat-menu>

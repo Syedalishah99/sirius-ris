@@ -1,0 +1,33 @@
+.documents {
+  cursor: pointer;
+  padding-left: 10px;
+}
+
+.machine {
+  padding-left: 0px !important;
+}
+
+.machine:hover {
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.male {
+  color: #05a3ff;
+}
+
+.female {
+  color: #d53a9d;
+}
+
+.other {
+  color: #05ffa1;
+}
+
+mat-chip {
+  opacity: 0.75;
+  font-size: 12px;
+}
+
+.roles {
+  padding-left: 10px !important;
+}

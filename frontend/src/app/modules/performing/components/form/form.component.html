@@ -1,0 +1,734 @@
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmitMaster()" *ngIf="sharedProp.mainSettings != undefined">
+    <div fxLayout="row" fxLayoutAlign="start start">
+      <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
+        <h3 class="details-title">Detalles de la realización:</h3>
+        <div class="current-wrap">
+          <!-- appointment_date -->
+          <div class="current-info divider-alt">
+            <small>Fecha de cita:</small><br/>
+            <span *ngIf="this.sharedProp.current_datetime" class="appointment-firts">{{ this.sharedProp.current_datetime.dateDay + '/' + this.sharedProp.current_datetime.dateMonth + '/' + this.sharedProp.current_datetime.dateYear }}</span>
+          </div>
+          
+          <!-- checkin_time -->
+          <div class="current-info divider-alt">
+            <small>Hora de recepción:</small><br/>
+            <span *ngIf="this.sharedProp.current_datetime" class="appointment-firts">{{ checkin_time }}</span>
+          </div>
+          
+          <!-- imaging -->
+          <span *ngIf="this.sharedProp.current_imaging">
+            <span *ngIf="this.sharedProp.current_imaging.organization && this.sharedProp.current_imaging.branch && this.sharedProp.current_imaging.service && this.sharedProp.current_modality">
+              <div class="current-info divider-alt">
+                <small>Organización ► Sucursal ► Servicio:</small><br/>
+                <span class="current-firts">{{ this.sharedProp.current_imaging.organization.short_name + ' ► ' + this.sharedProp.current_imaging.branch.short_name + ' ► ' + this.sharedProp.current_imaging.service.name }}</span>
+              </div>
+            </span>
+          </span>
+
+          <!-- modality -->
+          <span *ngIf="this.sharedProp.current_modality">
+            <div class="current-info text-center">
+              <small>Modalidad:</small><br/>
+              <span class="badge" matTooltip="{{ this.sharedProp.current_modality.code_meaning }}">
+                <span>{{ this.sharedProp.current_modality.code_value }}</span>
+              </span>
+            </div>
+          </span>
+
+          <div class="clear"></div>
+        </div>
+
+        <!-- patient -->
+        <span *ngIf="this.sharedProp.current_patient">
+          <span *ngIf="this.sharedProp.current_patient.person">
+            <h3 class="details-title">Datos del paciente:</h3>
+            <div class="current-wrap">
+              <!-- documents -->
+              <div class="current-info">
+                <small>Documento/s:</small><br/>
+                <span *ngFor="let current of this.sharedProp.current_patient.person.documents" >
+                  <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+                  <span matTooltip="{{ document_types[current.doc_type] }}">
+                    <span>{{ current.document }}</span>
+                  </span>
+                  <br/>
+                </span>
+              </div>
+              
+              <!-- names -->
+              <div class="current-info">
+                <small>Nombre completo:</small><br/>
+                <span class="current-firts">
+                  <span>{{ this.sharedProp.current_patient.person.name_01 }}</span>
+  
+                  <span *ngIf="this.sharedProp.current_patient.person.name_02">
+                    <span> {{ this.sharedProp.current_patient.person.name_02 }}</span>
+                  </span>
+  
+                  <span> {{ this.sharedProp.current_patient.person.surname_01 }}</span>
+  
+                  <span *ngIf="this.sharedProp.current_patient.person.surname_02">
+                    <span> {{ this.sharedProp.current_patient.person.surname_02 }}</span>
+                  </span>
+                </span>
+              </div>
+              
+              <div class="clear"></div>
+            </div>
+  
+            <div class="clear"></div>
+  
+            <div class="current-wrap">
+              <!-- birth_date -->
+              <div class="current-info">
+                <small>Fecha de nacimiento:</small><br/>
+                <span class="current-firts">{{ this.sharedProp.current_patient.person.birth_date | date:"dd/MM/yyyy":"UTC" }}</span>
+              </div>
+              
+              <!-- genre -->
+              <div class="current-info text-center">
+                <small>Género:</small><br/>
+                <span [ngSwitch]="this.sharedProp.current_patient.person.gender" matTooltip="{{ gender_types[this.sharedProp.current_patient.person.gender] }}">
+                  <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
+                  <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
+                  <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>
+                </span>
+              </div>
+              
+              <!-- status -->
+              <div class="current-info text-center">
+                <small>Estado:</small><br/>
+                <span *ngIf="this.sharedProp.current_patient.status; then thenBlock else elseBlock"></span>
+                <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="Activo">done</mat-icon></ng-template>
+                <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Inactivo">clear</mat-icon></ng-template>
+              </div>
+              
+              <div class="clear"></div>
+            </div>
+  
+          </span>
+        </span>
+
+        <hr class="dashed" />
+
+        <div class="text-center">
+          <small>Study IUID</small><br/><span class="label-accent">{{ this.sharedProp.current_study_iuid }}</span>
+        </div>
+      </div> <!-- end fxLayout wrapper -->
+  
+      <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+        <!-- flow_state -->
+        <h3 class="details-title">Flujo de trabajo:</h3>
+        <div fxLayout="row" fxLayoutAlign="start start">
+          <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+            <mat-form-field appearance="fill" class="full">
+              <mat-label>Flujo de trabajo</mat-label>
+              <mat-select formControlName="flow_state">
+                <div *ngFor="let currentFS of availableFS | keyvalue">
+                  <mat-option value="{{ currentFS.key }}" (click)="setFlowState(currentFS.key)">{{ currentFS.value }}</mat-option>
+                </div>
+              </mat-select>
+            </mat-form-field>
+          </div> <!-- end fxLayout wrapper -->
+
+          <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+            <div [class.non-display]="booleanCancelation == false">
+              <h4>Motivos de cancelación:</h4>
+              <mat-form-field appearance="fill" class="full">
+                <mat-label>Motivos de cancelación</mat-label>
+                <mat-select formControlName="cancellation_reasons">-->
+                  <div *ngFor="let currentReason of cancellation_reasons | keyvalue">
+                    <mat-option value="{{ currentReason.key }}">{{ currentReason.value }}</mat-option>
+                  </div>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div> <!-- end fxLayout wrapper -->
+        </div>
+
+        <h4>Urgencia:</h4>
+        <mat-radio-group aria-label="Urgencia" color="primary" formControlName="urgency">
+          <mat-radio-button value="true">Si</mat-radio-button>
+          <mat-radio-button value="false">No</mat-radio-button>
+        </mat-radio-group>
+
+        <div class="clear"></div><br/><hr class="dashed" /><br/>
+
+        <h4>Estado:</h4>
+        <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
+          <mat-radio-button value="true">Activo</mat-radio-button>
+          <mat-radio-button value="false">Inactivo</mat-radio-button>
+        </mat-radio-group>
+
+      </div> <!-- end fxLayout wrapper -->
+    </div>
+  
+    <hr class="dashed"/>
+
+    <mat-tab-group [selectedIndex]="tabIndex">
+
+        <!-- APPOINTMENT DETAILS TAB: ------------------------------------------------------------------------------------------------------------------ -->
+        <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">perm_contact_calendar</mat-icon> Detalles de la cita
+              <mat-icon *ngIf="detailsTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
+            </ng-template>
+            <app-tab-details></app-tab-details>
+        </mat-tab>
+        <!-- APPOINTMENT DETAILS TAB: ------------------------------------------------------------------------------------------------------------------ -->
+
+
+        <!-- INJECTION TAB: -------------------------------------------------------------------------------------------------------------------------- -->
+        <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">vaccines</mat-icon> Procedimiento
+              <mat-icon *ngIf="injectionTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
+            </ng-template>
+            
+            <div fxLayout="row" fxLayoutAlign="start start">
+              <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+                <h3 class="form-title text-center underline-fail-alt">Datos de la preparación:</h3>
+                <br/>
+
+                <h4>Procedimiento:</h4>
+                <mat-form-field appearance="fill" class="large">
+                  <mat-label>Procedimiento</mat-label>
+                  <mat-select formControlName="fk_procedure" placeholder="Seleccione el procedimiento">
+                    <div *ngFor="let currentProcedure of availableProcedures">
+                      <mat-option (click)="setProcedure(currentProcedure._id, currentProcedure.coefficient)" value="{{ currentProcedure._id }}">{{ currentProcedure.name }}</mat-option>
+                    </div>
+                  </mat-select>
+                </mat-form-field>
+
+                <hr class="dashed" /><br/>
+                  
+                <div formGroupName="injection" [class.non-display]="booleanContrast == false">
+                  <div fxLayout="row" fxLayoutAlign="start start">
+                    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+                      <h4>Tipo de contraste:</h4>
+                      <mat-form-field appearance="fill" class="full">
+                        <mat-label>Tipo de contraste</mat-label>
+                        <input matInput type="text" formControlName="sync_contrast_description" (keyup)="syncContrastDescription()" placeholder="Ingrese el volumen administrado">
+                      </mat-form-field>
+
+                      <br/>
+
+                      <h4>Hora de inyección <span class="label-info">Formato 24 hs</span>:</h4>
+                      <mat-form-field appearance="fill">
+                        <mat-label>Hora de inyección</mat-label>
+                        <input type="time" matInput formControlName="administration_time" min="00:00" max="24:00">
+                        <button matSuffix mat-icon-button type="button" matTooltip="Ahora" (click)="setTimeNow('injection.administration_time');"><mat-icon>timer</mat-icon></button>
+                      </mat-form-field>
+                    </div> <!-- end fxLayout wrapper -->
+
+                    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+                      <h4>Volumen administrado: <span class="label-info">mL</span></h4>
+                      <mat-form-field appearance="fill" class="full">
+                        <mat-label>Volumen administrado</mat-label>
+                        <input matInput icNumbersWD type="text" formControlName="administered_volume" placeholder="Ingrese el volumen administrado">
+                      </mat-form-field>
+                    </div> <!-- end fxLayout wrapper -->
+                  </div>
+
+                  <div class="clear"></div>
+                  <hr class="dashed"/><br/>
+                </div>
+
+                <h4>Observaciones <span class="label-info">min: 10, max: 1000</span>:</h4>
+                <ckeditor formControlName="observations" #injectionObservations [editor]="injectionObservationsEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+                
+                <br/><hr class="dashed" /><br/>
+
+                <div formGroupName="injection" [class.non-display]="booleanContrast == false">
+                  <h4>Responsable de inyección:</h4>
+                  <mat-form-field appearance="fill" class="large">
+                    <mat-label>Responsable de inyección</mat-label>
+                    <mat-select formControlName="injection_user" placeholder="Seleccione el responsable de inyección">
+                      <span *ngIf="this.injectionServiceUsers">
+                        <div *ngFor="let currentInjectionUser of this.injectionServiceUsers">
+                          <mat-option value="{{ currentInjectionUser._id }}">
+                            <!--names-->
+                            {{ currentInjectionUser.person.name_01 }}
+                            <span *ngIf="currentInjectionUser.person.name_02">
+                              {{ ' ' + currentInjectionUser.person.name_02 }}
+                            </span>
+                            <!--surnames-->
+                            {{ ' ' + currentInjectionUser.person.surname_01 }}
+                            <span *ngIf="currentInjectionUser.person.surname_02">
+                              {{ ' ' + currentInjectionUser.person.surname_02 }}
+                            </span>
+                          </mat-option>
+                        </div>
+                      </span>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <br/>
+
+              </div> <!-- end fxLayout wrapper -->
+      
+              <div class="input-wrapper text-center" [class.non-display]="sharedProp.current_modality_code_value == 'PT'"> <!-- start fxLayout wrapper -->
+                <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
+              </div> <!-- end fxLayout wrapper -->
+
+              <div class="input-wrapper" [class.non-display]="sharedProp.current_modality_code_value != 'PT'"> <!-- start fxLayout wrapper -->
+                <div formGroupName="injection">
+                  <h3 class="form-title text-center underline-fail-alt">Datos de inyección PET-CT:</h3>
+                  <br/>
+                  
+                  <div formGroupName="pet_ct">
+                    <div fxLayout="row" fxLayoutAlign="start start">
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                        <h4>Lote:</h4>
+                        <mat-form-field appearance="fill" class="medium">
+                          <mat-label>Lote</mat-label>
+                          <input matInput type="text" formControlName="batch" placeholder="Ingrese el lote">
+                        </mat-form-field>
+                      </div> <!-- end fxLayout wrapper -->
+
+                      <div class="input-wrapper sub-wrapper dose"> <!-- start fxLayout wrapper -->
+                        <h4>DOSIS RECOMENDADA:</h4>
+                        <span class="badge-warn badge-dose MBq">{{ sharedProp.recomended_dose }} MBq</span>
+                        <span class="badge-warn badge-dose mCi">{{ sharedFunctions.MBqTomCi(sharedProp.recomended_dose) }} mCi</span>
+                        <div class="clear"></div>
+                        <br/>
+                        <small>Dósis recomendada <strong>=</strong> Peso <strong>*</strong> Coeficiente de procedimiento</small>
+                      </div> <!-- end fxLayout wrapper -->
+                    </div>
+
+                    <hr class="dashed" /><br/>
+
+                    <div fxLayout="row" fxLayoutAlign="start start">
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                        <h4>Hora jeringa llena <span class="label-info">Formato 24 hs</span>:</h4>
+                        <mat-form-field appearance="fill" class="full">
+                          <mat-label>Hora jeringa llena</mat-label>
+                          <input type="time" matInput formControlName="syringe_full_time" min="00:00" max="24:00">
+                          <button matSuffix mat-icon-button type="button" matTooltip="Ahora" (click)="setTimeNow('injection.pet_ct.syringe_full_time');"><mat-icon>timer</mat-icon></button>
+                        </mat-form-field>
+                      </div> <!-- end fxLayout wrapper -->
+            
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                        <h4>Actividad jeringa llena <span class="label-info MBq">MBq</span>:</h4>
+                        <mat-form-field appearance="fill" class="full">
+                          <mat-label>Actividad jeringa llena MBq</mat-label>
+                          <input icNumbersWD (keyup)="convertActivity($event, 'syringe_activity_full_mCi', 'mCi')" type="text" matInput formControlName="syringe_activity_full" min="1" max="900">
+                        </mat-form-field>
+                      </div> <!-- end fxLayout wrapper -->
+
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                        <h4>Actividad jeringa llena <span class="label-info mCi">mCi</span>:</h4>
+                        <mat-form-field appearance="fill" class="full">
+                          <mat-label>Actividad jeringa llena mCi</mat-label>
+                          <input icNumbersWD (keyup)="convertActivity($event, 'syringe_activity_full', 'MBq')"  type="text" matInput formControlName="syringe_activity_full_mCi" min="1" max="900">
+                        </mat-form-field>
+                      </div> <!-- end fxLayout wrapper -->
+                    </div>
+
+                    <hr class="dashed" /><br/>
+
+                    <div fxLayout="row" fxLayoutAlign="start start">
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                        <h4>Hora jeringa vacía <span class="label-info">Formato 24 hs</span>:</h4>
+                        <mat-form-field appearance="fill" class="full">
+                          <mat-label>Hora jeringa vacía</mat-label>
+                          <input type="time" matInput formControlName="syringe_empty_time" min="00:00" max="24:00">
+                          <button matSuffix mat-icon-button type="button" matTooltip="Ahora" (click)="setTimeNow('injection.pet_ct.syringe_empty_time');"><mat-icon>timer</mat-icon></button>
+                        </mat-form-field>
+                      </div> <!-- end fxLayout wrapper -->
+            
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                        <h4>Actividad jeringa vacía <span class="label-info MBq">MBq</span>:</h4>
+                        <mat-form-field appearance="fill" class="full">
+                          <mat-label>Actividad jeringa vacía MBq</mat-label>
+                          <input icNumbersWD (keyup)="convertActivity($event, 'syringe_activity_empty_mCi', 'mCi')" type="text" matInput formControlName="syringe_activity_empty" min="1" max="900">
+                        </mat-form-field>
+                      </div> <!-- end fxLayout wrapper -->
+
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                        <h4>Actividad jeringa vacía <span class="label-info mCi">mCi</span>:</h4>
+                        <mat-form-field appearance="fill" class="full">
+                          <mat-label>Actividad jeringa vacía mCi</mat-label>
+                          <input icNumbersWD (keyup)="convertActivity($event, 'syringe_activity_empty', 'MBq')" type="text" matInput formControlName="syringe_activity_empty_mCi" min="1" max="900">
+                        </mat-form-field>
+                      </div> <!-- end fxLayout wrapper -->
+                    </div>
+
+                    <hr class="dashed" /><br/>
+
+                    <small>
+                      <button mat-flat-button color="accent" (click)="setAdministredActivity()" class="small_button" type="button">
+                        <mat-icon class="tab-icon">vaccines</mat-icon> CALCULAR DOSIS ADMINISTRADA &nbsp;
+                      </button>
+                    </small>
+
+                    <div fxLayout="row" fxLayoutAlign="start start">
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                        <h4>Actividad administrada <span class="label-info MBq">MBq</span>:</h4>
+                        <mat-form-field appearance="fill" class="full">
+                          <mat-label>Actividad administrada MBq</mat-label>
+                          <input icNumbersWD (keyup)="convertActivity($event, 'administred_activity_mCi', 'mCi')" type="text" matInput formControlName="administred_activity" min="1" max="900">
+                        </mat-form-field>
+                      </div> <!-- end fxLayout wrapper -->
+
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                        <h4>Actividad administrada <span class="label-info mCi">mCi</span>:</h4>
+                        <mat-form-field appearance="fill" class="full">
+                          <mat-label>Actividad administrada mCi</mat-label>
+                          <input icNumbersWD (keyup)="convertActivity($event, 'administred_activity', 'MBq')" type="text" matInput formControlName="administred_activity_mCi" min="1" max="900">
+                        </mat-form-field>
+                      </div> <!-- end fxLayout wrapper -->
+                    </div>
+
+                    <hr class="dashed" /><br/>
+                    
+                    <h4>Responsable de laboratorio:</h4>
+                    <mat-form-field appearance="fill" class="large">
+                      <mat-label>Responsable de laboratorio</mat-label>
+                      <mat-select formControlName="laboratory_user" placeholder="Seleccione el responsable de laboratorio">
+                        <span *ngIf="this.injectionServiceUsers">
+                          <div *ngFor="let currentLaboratoryUser of this.injectionServiceUsers">
+                            <mat-option value="{{ currentLaboratoryUser._id }}">
+                              <!--names-->
+                              {{ currentLaboratoryUser.person.name_01 }}
+                              <span *ngIf="currentLaboratoryUser.person.name_02">
+                                {{ ' ' + currentLaboratoryUser.person.name_02 }}
+                              </span>
+                              <!--surnames-->
+                              {{ ' ' + currentLaboratoryUser.person.surname_01 }}
+                              <span *ngIf="currentLaboratoryUser.person.surname_02">
+                                {{ ' ' + currentLaboratoryUser.person.surname_02 }}
+                              </span>
+                            </mat-option>
+                          </div>
+                        </span>
+                      </mat-select>
+                    </mat-form-field>
+                    
+                  </div>
+                </div>
+              </div> <!-- end fxLayout wrapper -->
+              
+              <div class="clear"></div>
+          </div>
+        </mat-tab>
+        <!-- INJECTION TAB: -------------------------------------------------------------------------------------------------------------------------- -->
+
+
+        <!-- ANESTHESIA TAB: --------------------------------------------------------------------------------------------------------------------------- -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">monitor_heart</mat-icon> Anestesia
+            <mat-icon *ngIf="anesthesiaTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
+          </ng-template>
+
+          <div formGroupName="anesthesia">
+            <div class="text-center">
+              <br/>
+              <h2>¿El estudio requiere anestesia?</h2>
+              <mat-radio-group aria-label="Anestesia" color="primary" formControlName="use_anesthesia" (change)="onChangeAnesthesia($event, form)">
+                <mat-radio-button value="true">Si</mat-radio-button>
+                <mat-radio-button value="false">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            
+            <br/>
+            
+            <div [class.non-display]="booleanAnesthesia == false">
+              <hr class="dashed" />
+        
+              <div fxLayout="row" fxLayoutAlign="start start">
+                <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+                  <h3 class="form-title text-center underline-fail-alt">Datos del anestesista:</h3>
+                  <br/>
+
+                  <h4>Nº de profesional:</h4>
+                  <mat-form-field appearance="fill" class="medium">
+                    <mat-label>Nº de profesional</mat-label>
+                    <input matInput type="text" formControlName="professional_id" placeholder="Ingrese el número de profesional">
+                  </mat-form-field>
+          
+                  <br/>
+          
+                  <h4>Documento:</h4>
+                  <mat-form-field appearance="fill" class="medium">
+                    <mat-label>Documento</mat-label>
+                    <input matInput type="text" formControlName="document" placeholder="Ingrese el documento">
+                  </mat-form-field>
+        
+                  <br/>
+          
+                  <h4>Nombre:</h4>
+                  <mat-form-field appearance="fill" class="large">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput icSpecialCharsWS type="text" formControlName="name" placeholder="Ingrese el nombre">
+                  </mat-form-field>
+          
+                  <br/>
+          
+                  <h4>Apellido:</h4>
+                  <mat-form-field appearance="fill" class="large">
+                    <mat-label>Apellido</mat-label>
+                    <input matInput icSpecialCharsWS type="text" formControlName="surname" placeholder="Ingrese el apellido">
+                  </mat-form-field>
+                </div> <!-- end fxLayout wrapper -->
+          
+                <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+                  <h3 class="form-title text-center underline-fail-alt">Procedimiento de anestesia:</h3>
+                  <br/>
+                  
+                  <h4>Procedimiento realizado <span class="label-info">min: 10, max: 1000</span>:</h4>
+                  <div [class.unselected]="anesthesiaValidator == false">
+                    <ckeditor formControlName="procedure" #procedure [editor]="procedureEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+                  </div>
+                </div> <!-- end fxLayout wrapper -->
+              </div>
+        
+              <div class="clear"></div>
+            </div>
+          </div>
+        </mat-tab>
+        <!-- ANESTHESIA TAB: --------------------------------------------------------------------------------------------------------------------------- -->
+
+
+        <!-- ACQUISITION TAB: -------------------------------------------------------------------------------------------------------------------------- -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">airline_seat_flat</mat-icon> Adquisición
+            <mat-icon *ngIf="acquisitionTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
+          </ng-template>
+                
+            <div fxLayout="row" fxLayoutAlign="start start">
+              <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+                <h3 class="form-title text-center underline-fail-alt">Datos de la Adquisición:</h3>
+                <br/>
+                
+                <h4>Equipo:</h4>
+                <mat-form-field appearance="fill" class="large">
+                  <mat-label>Equipo</mat-label>
+                  <mat-select formControlName="fk_equipment" placeholder="Seleccione el equipo">
+                    <div *ngFor="let currentEquipment of availableEquipments">
+                      <mat-option (click)="setEquipment(currentEquipment._id)" value="{{ currentEquipment._id }}">{{ currentEquipment.name }}</mat-option>
+                    </div>
+                  </mat-select>
+                </mat-form-field>
+
+                <hr class="dashed" /><br/>
+
+                <div formGroupName="acquisition">
+                  <h4>Hora de adquisición <span class="label-info">Formato 24 hs</span>:</h4>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Hora de adquisición</mat-label>
+                    <input type="time" matInput formControlName="time" min="00:00" max="24:00">
+                    <button matSuffix mat-icon-button type="button" matTooltip="Ahora" (click)="setTimeNow('acquisition.time');"><mat-icon>timer</mat-icon></button>
+                  </mat-form-field>
+
+                  <h4>Observaciones <span class="label-info">min: 10, max: 1000</span>:</h4>
+                  <ckeditor formControlName="observations" #acquisitionObservations [editor]="acquisitionObservationsEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+
+                  <br/><hr class="dashed"/><br/>
+
+                  <h4>Técnico en consola:</h4>
+                  <mat-form-field appearance="fill" class="large">
+                    <mat-label>Técnico en consola</mat-label>
+                    <mat-select formControlName="console_technician" placeholder="Seleccione el técnico en consola">
+                      <span *ngIf="this.technicianServiceUsers">
+                        <div *ngFor="let currentConsoleTechnician of this.technicianServiceUsers"><!-- 5 Técnicos-->
+                          <mat-option value="{{ currentConsoleTechnician._id }}">
+                            <!--names-->
+                            {{ currentConsoleTechnician.person.name_01 }}
+                            <span *ngIf="currentConsoleTechnician.person.name_02">
+                              {{ ' ' + currentConsoleTechnician.person.name_02 }}
+                            </span>
+                            <!--surnames-->
+                            {{ ' ' + currentConsoleTechnician.person.surname_01 }}
+                            <span *ngIf="currentConsoleTechnician.person.surname_02">
+                              {{ ' ' + currentConsoleTechnician.person.surname_02 }}
+                            </span>
+                          </mat-option>
+                        </div>
+                      </span>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <br/>
+              </div> <!-- end fxLayout wrapper -->
+    
+              <div class="input-wrapper text-center"> <!-- start fxLayout wrapper -->
+                <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
+              </div> <!-- end fxLayout wrapper -->
+            </div>
+    
+            <div class="clear"></div>
+        </mat-tab>
+        <!-- ACQUISITION TAB: -------------------------------------------------------------------------------------------------------------------------- -->
+
+        <!-- HISTORY TAB: ---------------------------------------------------------------------------------------------------------------- -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">history</mat-icon> Estudios previos
+        </ng-template>
+
+        <div *ngIf="previous; then thenBlockTable else elseBlockTable"></div>
+
+        <ng-template #thenBlockTable>
+          <div #main_list>
+            <table mat-table [dataSource]="previous">
+              <!-- current -->
+              <ng-container matColumnDef="current">
+                <th mat-header-cell *matHeaderCellDef class="text-center column-alt"></th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                  <span *ngIf="element._id == _id"><mat-icon class="current_item" matTooltip="Actual">arrow_forward</mat-icon></span>
+                </td>
+              </ng-container>
+
+              <!-- flow_state -->
+              <ng-container matColumnDef="flow_state">
+                <th mat-header-cell *matHeaderCellDef class="text-center column-alt">Flujo de estudio</th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                  <!--See report-->
+                  <span *ngIf="element.flow_state == 'P09'">
+                    <button mat-mini-fab class="small_button_alt" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="Ver informe" color="accent">
+                      <mat-icon>playlist_add_check</mat-icon>
+                    </button>
+                    <br/>
+                  </span>
+
+                  <!--flow_state-->
+                  <span class="badge badge-mini {{ element.flow_state }}" matTooltip="{{ cancellation_reasons[element.cancellation_reasons] }}" *ngIf="element.flow_state">{{ performingFS[element.flow_state] }}</span>
+                </td>
+              </ng-container>
+
+              <!-- date -->
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef class="text-center column-alt"> Fecha </th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                  <span *ngIf="element.date">{{ element.date | date : "dd/MM/yyyy" : "UTC" }}</span>
+                </td>
+              </ng-container>
+
+              <!-- checkin_time -->
+              <ng-container matColumnDef="checkin_time">
+                <th mat-header-cell *matHeaderCellDef class="text-center column-alt"> Hora<br/>recepción </th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                  <span *ngIf="element.date">{{ element.date | date : "HH:mm" : "UTC" }}</span>
+                </td>
+              </ng-container>
+
+              <!-- patient_age -->
+              <ng-container matColumnDef="patient_age">
+                <th mat-header-cell *matHeaderCellDef matTooltip="Edad al momento de la realización del estudio" class="text-center column-alt"> Edad </th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                  <span *ngIf="element.patient">
+                    <span *ngIf="element.patient.person">
+                      <span>{{ sharedFunctions.calculateAge(element.patient.person.birth_date, element.date) }}</span>
+                    </span>
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- details -->
+              <ng-container matColumnDef="details">
+                <th mat-header-cell *matHeaderCellDef class="text-center column-alt"> Detalle </th>
+                <td mat-cell *matCellDef="let element">
+                  <!-- procedure -->
+                  <span *ngIf="element.procedure">
+                    <span class="badge-alt" matTooltip="{{ element.procedure.code }}">{{ element.procedure.name }}</span>
+                  </span>
+
+                  <div class="clear"></div><hr class="dashed" />
+
+                  <!-- equipment -->        
+                  <span *ngIf="element.equipment; then thenBlockTableEquipment else elseBlockTableEquipment"></span>
+                      <ng-template #thenBlockTableEquipment>
+                      <span class="badge-accent" matTooltip="{{ 'AET: ' + element.equipment.AET }}">
+                      <span>{{ element.equipment.name }}</span>
+                      </span>
+                  </ng-template>
+                  <ng-template #elseBlockTableEquipment>(Sin dato)</ng-template>
+
+                  <!-- modality -->
+                  <span *ngIf="element.modality; then thenBlockTableModality else elseBlockTableModality"></span>
+                  <ng-template #thenBlockTableModality>
+                    <span class="badge" matTooltip="{{ element.modality.code_meaning }}">{{ element.modality.code_value }}</span>
+                  </ng-template>
+                  <ng-template #elseBlockTableModality>(Sin dato)</ng-template>
+                </td>
+              </ng-container>
+
+              <!-- domain -->
+              <ng-container matColumnDef="domain">
+                <th mat-header-cell *matHeaderCellDef class="text-center column-alt">Dominio</th>
+                <td mat-cell *matCellDef="let element">
+                  <div *ngIf="element.appointment" class="domain-container">
+                    <!--referring-->
+                    <small><strong>Solicitante: </strong></small>
+                    <span *ngIf="element.appointment.referring; then thenBlockReferring else elseBlockReferring"></span>
+                    <ng-template #thenBlockReferring>
+                      <small>
+                        <span *ngIf="element.appointment.referring.organization">{{ element.appointment.referring.organization.short_name }}</span>
+                        <span *ngIf="element.appointment.referring.branch"> ► {{ element.appointment.referring.branch.short_name }}</span>
+                        <span *ngIf="element.appointment.referring.service"> ► {{ element.appointment.referring.service.name }}</span>
+                      </small>
+                    </ng-template>
+                    <ng-template #elseBlockReferring>(Sin dato)</ng-template>
+
+                    <hr class="dashed" />
+
+                    <!--imaging-->
+                    <small><strong>Realizador: </strong></small>
+                    <span *ngIf="element.appointment.imaging; then thenBlockImaging else elseBlockImaging"></span>
+                    <ng-template #thenBlockImaging>
+                      <small>
+                        <span *ngIf="element.appointment.imaging.organization">{{ element.appointment.imaging.organization.short_name }}</span>
+                        <span *ngIf="element.appointment.imaging.branch"> ► {{ element.appointment.imaging.branch.short_name }}</span>
+                        <span *ngIf="element.appointment.imaging.service"> ► {{ element.appointment.imaging.service.name }}</span>
+                      </small>
+                    </ng-template>
+                    <ng-template #elseBlockImaging>(Sin dato)</ng-template>
+
+                    <hr class="dashed" />
+
+                    <!--reporting-->
+                    <small><strong>Informador: </strong></small>
+                    <span *ngIf="element.appointment.reporting; then thenBlockReporting else elseBlockReporting"></span>
+                    <ng-template #thenBlockReporting>
+                      <small>
+                        <span *ngIf="element.appointment.reporting.organization">{{ element.appointment.reporting.organization.short_name }}</span>
+                        <span *ngIf="element.appointment.reporting.branch"> ► {{ element.appointment.reporting.branch.short_name }}</span>
+                        <span *ngIf="element.appointment.reporting.service"> ► {{ element.appointment.reporting.service.name }}</span>
+                      </small>
+                    </ng-template>
+                    <ng-template #elseBlockReporting>(Sin dato)</ng-template>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+        </ng-template>
+                
+        <!-- Await previous or not previous -->
+        <ng-template #elseBlockTable>
+          <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
+            No se encontraron estudios previos.
+          </div>
+        </ng-template>
+      </mat-tab>
+      <!-- HISTORY TAB: ---------------------------------------------------------------------------------------------------------------- -->
+    </mat-tab-group>
+
+    <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+    <div> <!-- start fxLayout wrapper -->
+        <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
+        <button mat-flat-button type="button" color="primary" (click)="onSubmitMaster()" >GUARDAR</button>
+        <span *ngIf="['P01', 'P02', 'P03', 'P04', 'P05'].includes(form.value.flow_state)">
+          <button mat-flat-button type="button" color="accent" [disabled]="nextStepButtonDisabled" (click)="onNextStep()" >GUARDAR Y AVANZAR</button>
+        </span>
+    </div> <!-- end fxLayout wrapper -->
+  </div>
+</form>

@@ -1,0 +1,93 @@
+.form-title {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 1px;
+}
+
+.person-icon {
+  color: #383a53;
+  margin-left: -12.6%;
+  font-size: 120px;
+}
+
+.male {
+  color: #05a3ff;
+}
+
+.female {
+  color: #d53a9d;
+}
+
+.other {
+  color: #05ffa1;
+}
+
+.user-wrap {
+  background-color: #2e304b;
+  border-radius: 4px;
+  padding: 0px 0px 0px 12px;
+  margin-bottom: 10px;
+}
+
+.user-info {
+  float: left;
+  margin-right: 10px;
+  padding: 5px 12px 5px 5px;
+}
+
+.user-first {
+  font-size: 16px;
+}
+
+.friendly-pass-wrap {
+  background-color: #2e304b;
+  border-radius: 4px;
+  padding: 6px 0px 4px 12px;
+  margin-bottom: 10px;
+}
+
+.friendly-pass {
+  font-size: 16px;
+  background-color: #e2e3ec;
+  color: #12121d;
+  padding: 4px 7px 3px 9px;
+  border-radius: 2px;
+}
+
+.appointment_request {
+  background-color: #733ad54a;
+  padding: 7px 7px 7px 14px;
+  border-radius: 4px;
+  border: 2px solid #05ff9f70;
+}
+
+.study {
+  margin-bottom: 4px !important;
+}
+
+.domain-container {
+  background-color: rgba(255, 255, 255, 0.035);
+  margin: 0px -17px 0px 8px;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.badge-mini {
+  float: none !important;
+}
+
+.small_button{
+  margin-left: 6px !important;
+  margin-bottom: 7px !important;
+  width: 25px !important;
+  height: 25px !important;
+  border-radius: 5px !important;
+  padding: 0% !important;
+  color: #27293d !important;
+}
+
+.small_button mat-icon {
+  position: relative !important;
+  margin: 0px !important;
+  top: -8px !important;
+}

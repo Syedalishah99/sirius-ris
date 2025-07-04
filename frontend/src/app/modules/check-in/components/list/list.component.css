@@ -1,0 +1,58 @@
+.documents {
+  cursor: pointer;
+  padding-left: 10px;
+}
+
+.repeated_surname {
+  background-color: #de615c;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.badge-dose{
+  opacity: 0.8;
+}
+
+.male {
+  color: #05a3ff;
+}
+
+.female {
+  color: #d53a9d;
+}
+
+.other {
+  color: #05ffa1;
+}
+
+.badge-mini {
+  float: none !important;
+}
+
+.MBq {
+  background-color: #05ff9f8e !important;
+  color: #fff;
+}
+
+.mCi {
+  background-color: #ff6e69d2 !important;
+  color: #fff;
+}
+
+.patient-details {
+  cursor: pointer;
+  color: rgb(240, 206, 122);
+}
+
+.private_health {
+  display: inline-block;
+  margin-left: 15px;
+  margin-bottom: 5px;
+  padding: 3px 6px 3px 6px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 11px;
+  background: #e91e6299;
+}

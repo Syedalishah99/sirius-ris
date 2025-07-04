@@ -1,0 +1,86 @@
+# IP server:
+ip_server: 'localhost'
+
+# Sirius Frontend:
+sirius_frontend:
+  port: 4000
+
+# MongoDB server settings:
+db:
+  host: 'localhost'
+  port: 27017
+  user: 'sirius_user'
+  pass: 'sirius_pass'
+  name: 'sirius_db'
+
+# Set external PACS data:
+pacs:
+  host        : 'localhost'
+  port_mllp   : 2575
+
+# Set Wezen service data:
+wezen:
+  host        : 'localhost'
+  port        : 2001
+
+# Set OHIF service data:
+ohif:
+  host        : 'localhost'
+  port        : 3000
+
+# Web server settings:
+webserver:
+  host            : 'localhost'
+  http_enabled    : true
+  http_port       : 2000
+  https_enabled   : false
+  https_port      : 2001
+
+# Mail server settings:
+# Allowed mail types: 'gmail', 'other'.
+mailserver:
+  type            : 'gmail'
+  host            : 'localhost'
+  port            : 1025
+  secure          : true
+  from            : 'opendicom Sirius RIS'
+  user            : 'opendicomsirius@gmail.com'
+  pass            : 'zuuczgrmpesuqlgh'
+
+# SSL settings (Only if https_enabled is true):
+ssl_certificates:
+  key  : './certificates/cert.key'
+  cert : './certificates/cert.crt'
+  ca   : false
+
+# Set CORS and CORS whitelist:
+cors_enabled    : false
+cors_whitelist  : ['http://example.com:8080','https://another-example.com:443']
+
+# Set log level:
+# DEBUG > INFO > WARN > ERROR
+log_level: 'DEBUG'
+
+# Delete authorization code:
+delete_code: 'delete_code'
+
+# RABC exclusion code:
+rabc_exclude_code: 'exclude_code'
+
+# Set your secret token:
+# For your safety change this value please.
+AUTH_JWT_SECRET: 'top_secret'
+
+# Access Control Middleware:
+# Maximum number (AC_NUMBER_OF_ATTEMPTS) of requests that a client IP can make in AC_TIME_WINDOW time.
+# If a client IP exceeds this condition it will be penalized for AC_PENALTY_TIME time.
+AC_NUMBER_OF_ATTEMPTS: 5
+AC_TIME_WINDOW: 10    # Seconds 
+AC_PENALTY_TIME: 15   # Seconds 
+
+# Signature length:
+# Used in signature PDF service.
+signature_length: 4628
+
+# Set the language of the responses:
+language: 'ES'

@@ -1,0 +1,109 @@
+.form-title {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 1px;
+}
+
+.male {
+  color: #05a3ff;
+}
+
+.female {
+  color: #d53a9d;
+}
+
+.other {
+  color: #05ffa1;
+}
+
+.current-wrap {
+  background-color: #2e304b;
+  border-radius: 4px;
+  padding: 0px 0px 0px 12px;
+  margin-bottom: 10px;
+}
+
+.current-info {
+  float: left;
+  margin-right: 10px;
+  padding: 5px 12px 5px 5px;
+}
+
+.current-first {
+  font-size: 16px;
+}
+
+.appointment-firts {
+  font-size: 18px;
+}
+
+.details-title {
+  margin-bottom: 5px !important;
+}
+
+.preparation-wrap {
+  background-color: #43466ea6;
+  min-height: 200px;
+  padding-top: 5px;
+}
+
+.primary-color{
+  background-color: #c2185b;
+  color: #fff;
+}
+ 
+.default-color{
+  background-color: #424242;
+  color: #fff;
+}
+
+.dose{
+  text-align: center;
+  opacity: 0.8;
+  background-color: #43466e79;
+  border-radius: 5px;
+}
+
+.badge-dose{
+  float: none !important;
+}
+
+.MBq {
+  background-color: #05ff9f8e !important;
+  color: #fff;
+}
+
+.mCi {
+  background-color: #ff6e69d2 !important;
+  color: #fff;
+}
+
+.domain-container {
+  background-color: rgba(255, 255, 255, 0.035);
+  margin: 0px -17px 0px 8px;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.badge-mini {
+  float: none !important;
+}
+
+.small_button_alt{
+  margin-left: 6px !important;
+  margin-bottom: 7px !important;
+  width: 25px !important;
+  height: 25px !important;
+  border-radius: 5px !important;
+  padding: 0% !important;
+}
+
+.small_button_alt mat-icon {
+  position: relative !important;
+  margin: 0px !important;
+  top: -8px !important;
+}
+
+.current_item {
+  color: #d53a9d;
+}

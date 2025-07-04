@@ -1,0 +1,79 @@
+.form-title {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 1px;
+}
+
+.search-off-icon {
+  color: #383a53;
+  margin-left: -12.6%;
+  font-size: 120px;
+}
+
+.male {
+  color: #05a3ff;
+}
+
+.female {
+  color: #d53a9d;
+}
+
+.other {
+  color: #05ffa1;
+}
+
+.current-wrap {
+  background-color: #2e304b;
+  border-radius: 4px;
+  padding: 0px 0px 0px 12px;
+  margin-bottom: 10px;
+}
+
+.current-info {
+  float: left;
+  margin-right: 10px;
+  padding: 5px 12px 5px 5px;
+}
+
+.current-first {
+  font-size: 16px;
+}
+
+.appointment-firts {
+  font-size: 18px;
+}
+
+.details-title {
+  margin-bottom: 5px !important;
+}
+
+.preparation-wrap {
+  background-color: #43466ea6;
+  min-height: 200px;
+  padding-top: 5px;
+}
+
+.primary-color{
+  background-color: #c2185b;
+  color: #fff;
+}
+
+.default-color{
+  background-color: #424242;
+  color: #fff;
+}
+
+.friendly-pass-wrap {
+  background-color: #2e304b;
+  border-radius: 4px;
+  padding: 6px 0px 4px 12px;
+  margin-bottom: 10px;
+}
+
+.friendly-pass {
+  font-size: 16px;
+  background-color: #e2e3ec;
+  color: #12121d;
+  padding: 4px 7px 3px 9px;
+  border-radius: 2px;
+}

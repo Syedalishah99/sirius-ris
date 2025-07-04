@@ -1,0 +1,44 @@
+
+<form class="form-element service-container" [formGroup]="form">
+  <mat-form-field appearance="outline" class="medium">
+    <mat-label>Servicio</mat-label>
+    <mat-select formControlName="domain" placeholder="Seleccione el servicio">
+      <div *ngFor="let currentService of availableServices">
+        <div *ngFor="let currentBranch of availableBranches">
+          <div *ngFor="let currentOrganization of availableOrganizations">
+            <mat-option (click)="onSetDomain(currentOrganization._id, currentBranch._id, currentService._id)" *ngIf="currentBranch.fk_organization == currentOrganization._id && currentService.fk_branch == currentBranch._id" value="{{ currentOrganization._id + '.' + currentBranch._id + '.' + currentService._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ► {{ currentService.name }}</mat-option>
+          </div>
+        </div>
+      </div>
+    </mat-select>
+  </mat-form-field>
+</form>
+
+<div class="calendar-container" [class.non-display]="getKeys(sharedProp.current_imaging).length == 0">
+  <!-- FullCalendar Datepicker -->
+  <mat-form-field appearance="fill" id="invisible-datepicker" class="invisible-datepicker large" (click)="picker.open()">
+    <mat-label>Seleccione fecha</mat-label>
+    <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" (keydown)="false" (dateChange)="onChangeDate($event)">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <!-- FullCalendar -->
+  <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+
+  <br/>
+
+  <button mat-flat-button type="button" appearance="fill" (click)="setResources('ALL')">Todos los equipos</button>
+  <span *ngFor="let currentResource of calendarResources">
+    <button mat-flat-button type="button" appearance="fill" color="accent" (click)="setResources(currentResource.id)">{{ currentResource.title.split('|')[0] }}</button>
+  </span>
+  <br/>
+</div>
+
+<form class="form-element text-center" [class.non-display]="getKeys(sharedProp.current_imaging).length > 0">
+  <br/>
+  <mat-icon class="select-icon">ads_click</mat-icon>
+  <br/><br/><hr class="dashed" /><br/>
+  <h3>Debe seleccionar un servicio para comenzar.</h3>
+  <br/><br/>
+</form>

@@ -1,0 +1,63 @@
+<div class="settings-content">
+  <div class="settings-card">
+    Las siguientes configuraciones afectan los registros a lo largo de todo el flujo de datos y el modo de funcionamiento de la aplicación <strong>Sirius RIS</strong>.<br/>
+    En caso de no estar seguro de la maniobra a realizar, le recomendamos que consulte con el personal calificado para dicha tarea.
+  </div>
+
+  <br/>
+
+  <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/organizations/list">
+    <mat-icon>apartment</mat-icon><br/>
+    Organizaciones
+  </button>
+
+  <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/branches/list">
+    <mat-icon>account_tree</mat-icon><br/>
+    Sucursales
+  </button>
+
+  <button mat-button routerLink="/services/list">
+    <mat-icon>health_and_safety</mat-icon><br/>
+    Servicios
+  </button>
+
+  <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/modalities/list">
+    <mat-icon>multiple_stop</mat-icon><br/>
+    Modalidades
+  </button>
+
+  <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/equipments/list">
+    <mat-icon>precision_manufacturing</mat-icon><br/>
+    Equipamiento
+  </button>
+
+  <button mat-button routerLink="/procedures/list">
+    <mat-icon>format_list_numbered</mat-icon><br/>
+    Procedimientos
+  </button>
+
+  <button mat-button routerLink="/procedure_categories/list">
+    <mat-icon>category</mat-icon><br/>
+    Categorías de procedimientos
+  </button>
+
+  <button mat-button routerLink="/pathologies/list">
+    <mat-icon>coronavirus</mat-icon><br/>
+    Patologías
+  </button>
+
+  <button mat-button routerLink="/users/list">
+    <mat-icon>people</mat-icon><br/>
+    Cuentas de usuarios
+  </button>
+
+  <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/files/list">
+    <mat-icon>folder</mat-icon><br/>
+    Archivos
+  </button>
+
+  <br/><hr class="dashed" />
+
+  <img class="sirius" src="../../../../assets/img/sirius.png" alt="">
+
+</div>
